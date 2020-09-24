@@ -93,7 +93,7 @@ for i in range(iter):
     form_sheet_page_2['J20'] = data_list[37] ## 의견
 
     #output file 저장 부분
-    output_file_name = 'desktop/rpa/output/output' + str(data_list[0]) +'.xlsx'
+    output_file_name = 'desktop/rpa/output/building' + str(data_list[0]) +'.xlsx'
     form.save(output_file_name)
 
     # sample_img.anchor(form_work_sheet.cell('B6'))
