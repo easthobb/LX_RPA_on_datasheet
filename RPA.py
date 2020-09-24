@@ -21,7 +21,7 @@ form_sheet_page_2 = form.get_sheet_by_name('building_2') #폼 시트 페이지 2
 # 로 데이터 개별 객체를 데이터 시트에서 추출
 for i in range(iter):
     sheet_start_cell = "A" + str(i+iter)
-    sheet_end_cell = "AJ" + str(i+iter)
+    sheet_end_cell = "AM" + str(i+iter)
     
     building_object = data_sheet[sheet_start_cell:sheet_end_cell] # 반복시 변경해야 됩니다
     data_list = []
@@ -30,8 +30,8 @@ for i in range(iter):
             data_list.append(cell.value)
 
     print(data_list)
-# (예정) for 문 삽입부분
-# 추출한 데이터를 양식에 매핑시켜주는 부분
+    # (예정) for 문 삽입부분
+    # 추출한 데이터를 양식에 매핑시켜주는 부분
     form_sheet_page_1['B2'] = data_list[0] ##관리번호
     form_sheet_page_1['D6'] = data_list[1] ##고유번호
     form_sheet_page_1['J6'] = data_list[2] ## 재산번호
@@ -42,9 +42,22 @@ for i in range(iter):
     form_sheet_page_1['J8'] = data_list[7] ## 관리관
     form_sheet_page_1['D9'] = data_list[8] ## 재산구분
     form_sheet_page_1['J9'] = data_list[9] ## 위임기관
+    form_sheet_page_1['D10'] = data_list[10]## 대장면적
+    form_sheet_page_1['G10'] = data_list[11]## 대장지목
+    form_sheet_page_1['J10'] = data_list[12] ## 연면적
+    form_sheet_page_1['D11'] = data_list[13] ## 관련지번
+    form_sheet_page_1['J11'] = data_list[14]## 용도
+    form_sheet_page_1['D12'] = data_list[15]##공시지가
+    form_sheet_page_1['G12'] = data_list[16] ##구조/지붕
+    form_sheet_page_1['J12'] = data_list[17] ##층수
+    form_sheet_page_1['D13'] = data_list[18] ## 용도지역
+    form_sheet_page_1['G13'] = data_list[19] ## 용도지구
+    form_sheet_page_1['J13'] = data_list[20] ## 용도구역
+    form_sheet_page_1['C14'] = data_list[21] ## 이용현황
+    form_sheet_page_1['C15'] = data_list[22] ## 토지이용계획
 
     # (예정) for문 삽입부분 
-    # 이미지 입력부분 : 리사이즈
+    # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 관리번호-1( ),관리번호-2( ), 관리번호-3( ),관리번호-4( )
     for j in range(4):
         img_file_name = 'desktop/rpa/image/' + str(data_list[0]) +'-' +str(j+1) +'.png' # 첫번째 페이지 이미지 이름 지정
         print(img_file_name)
@@ -60,6 +73,26 @@ for i in range(iter):
         elif(j==3):
             form_sheet_page_1.add_image(img,'H34')
 
+    #추출한 데이터를 매핑시켜주는 부분 :  building_2 sheet
+    form_sheet_page_2['C4'] = data_list[23] ## 건축허가일
+    form_sheet_page_2['G4'] = data_list[24] ## 사용승인일
+    form_sheet_page_2['K4'] = data_list[25] ## 조사일
+    form_sheet_page_2['C5'] = data_list[26] ## 연면적
+    form_sheet_page_2['G5'] = data_list[27] ## 대지면적
+    form_sheet_page_2['K5'] = data_list[28] ## 건축면적
+    
+    form_sheet_page_2['C8'] = data_list[29] ## 건폐율 - 건축물대장
+    form_sheet_page_2['G8'] = data_list[30] ## 건폐율 -조사일기준
+    form_sheet_page_2['K8'] = data_list[31] ## 건폐율 - 대지활용도
+    form_sheet_page_2['C9'] = data_list[32] ## 용적율 - 건축물대장
+    form_sheet_page_2['G9'] = data_list[33] ## 용적율 - 조사일 기준
+    form_sheet_page_2['K9'] = data_list[34] ## 용적율 - 대지활용도
+
+    form_sheet_page_2['C20'] = data_list[35] ## 토지표시사항
+    form_sheet_page_2['G20'] = data_list[36] ## 불일치사항
+    form_sheet_page_2['J20'] = data_list[37] ## 의견
+
+    #output file 저장 부분
     output_file_name = 'desktop/rpa/output/output' + str(data_list[0]) +'.xlsx'
     form.save(output_file_name)
 
