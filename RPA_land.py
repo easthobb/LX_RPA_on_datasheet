@@ -47,8 +47,8 @@ for i in range(iter):
     
     # (예정) for 문 삽입부분
     # 추출한 데이터를 양식에 매핑시켜주는 부분 :  land_1 sheet
-    form_sheet_page_1['B1'] = data_list[0] ##관리번호
-    form_sheet_page_1['D6'] = data_list[1] ##고유번호
+    form_sheet_page_1['B1'] = data_list[0] ## 관리번호
+    form_sheet_page_1['D6'] = data_list[1] ## 고유번호
     form_sheet_page_1['J6'] = data_list[2] ## 재산번호
     form_sheet_page_1['D7'] = data_list[3] ## 소재지
     form_sheet_page_1['J7'] = data_list[4] ## 재산명칭
@@ -70,8 +70,10 @@ for i in range(iter):
     form_sheet_page_1['D15'] = data_list[19] ## 조사현황
     form_sheet_page_1['C16'] = data_list[20] ## 토지이용계획
   
-
-
+    ## 소재지 00시 00구 추출 부분 
+    city = (data_list[3].split())[0]
+    district = (data_list[3].split())[1] 
+    form_sheet_page_1['C1'] = city + " " + district
     #추출한 데이터를 매핑시켜주는 부분 :  building_2 sheet
 
     form_sheet_page_2['B16'] = data_list[21] ## 기호

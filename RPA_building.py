@@ -55,12 +55,12 @@ for i in range(iter):
     form_sheet_page_1['J8'] = data_list[7] ## 관리관
     form_sheet_page_1['D9'] = data_list[8] ## 재산구분
     form_sheet_page_1['J9'] = data_list[9] ## 위임기관
-    form_sheet_page_1['D10'] = data_list[10]## 대장면적
-    form_sheet_page_1['G10'] = data_list[11]## 대장지목
+    form_sheet_page_1['D10'] = data_list[10] ## 대장면적
+    form_sheet_page_1['G10'] = data_list[11] ## 대장지목
     form_sheet_page_1['J10'] = data_list[12] ## 연면적
     form_sheet_page_1['D11'] = data_list[13] ## 관련지번
-    form_sheet_page_1['J11'] = data_list[14]## 용도
-    form_sheet_page_1['D12'] = data_list[15]##공시지가
+    form_sheet_page_1['J11'] = data_list[14] ## 용도
+    form_sheet_page_1['D12'] = data_list[15] ##공시지가
     form_sheet_page_1['G12'] = data_list[16] ##구조/지붕
     form_sheet_page_1['J12'] = data_list[17] ##층수
     form_sheet_page_1['D13'] = data_list[18] ## 용도지역
@@ -68,6 +68,11 @@ for i in range(iter):
     form_sheet_page_1['J13'] = data_list[20] ## 용도구역
     form_sheet_page_1['C14'] = data_list[21] ## 이용현황
     form_sheet_page_1['C15'] = data_list[22] ## 토지이용계획
+
+    ## 소재지 00시 00구 추출 부분 
+    city = (data_list[3].split())[0]
+    district = (data_list[3].split())[1] 
+    form_sheet_page_1['C1'] = city + " " + district
 
     # (예정) for문 삽입부분 
     # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 관리번호-1( ),관리번호-2( ), 관리번호-3( ),관리번호-4( )
