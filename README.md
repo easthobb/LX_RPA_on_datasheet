@@ -1,7 +1,8 @@
 # LX_RPA_on_datasheet
 
- this project is for excel RPA datasheet for LX seoul HQ using OpenpyXl
-엑셀 데이터 -> 문서(excel,PDF) 양식 입력 자동화를 위한 파이썬 배치파일  
+this project is for excel RPA datasheet for LX seoul HQ using OpenpyXl
+엑셀 데이터 -> 문서(excel,PDF) 양식 입력 자동화를 위한 파이썬 배치파일
+2020/09/28 - ver 1.0 rel.
 
 ---
 ## 기능 요구사항
@@ -21,3 +22,10 @@
 
 ---
 ## 가이드
+- Notion 으로 배포
+
+---
+## dependency
+- openpyxl
+- pywin32
+- pillow

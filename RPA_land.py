@@ -17,7 +17,7 @@ data = openpyxl.load_workbook(filepath+'data.xlsx') #로 데이터 시트 오픈
 data_sheet_name = 'land' ## 데이터 파일 시트 
 start_column = 'A' ## 데이터 파일 시트에서 값을 가져올 시작 열
 end_column = 'AP' ## 데이터 파일 시트에서 값을 가져올 끝 열
-iter = 4 ## 문서 생성을 할 데이터의 갯수 
+iter = 2 ## 문서 생성을 할 데이터의 갯수 
 data_sheet = data.get_sheet_by_name(data_sheet_name) #로 데이터 시트 객체 파일(land,시트명 : land)
 
 ### form sheet 에서 필요한 설정요소
