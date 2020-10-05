@@ -13,17 +13,29 @@ filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
 saved_name = '실태조사_'
 
+# 사용자에게 시트 입력을 받는 부분
+while(1):
+    print('대상 재산이 시내 시트에 존재하는 데이터일 경우 1 을 입력해주시고 \n 시계외 데이터일 경우 0 을 입력해주세요!(enter)')
+    temp = input()
+    if(temp =='1'):
+        data_sheet_name = '시내'
+        break
+    elif(temp=='0'):
+        data_sheet_name = '시계외'
+        break
+    else:
+        print('잘 못 입력하셨습니다. 다시 입력해주세요 :)')
+
+
 ### data sheet에서 필요한 설정요소 ### 
 data = openpyxl.load_workbook(filepath+'resultDB.xlsx') #로 데이터 시트 오픈(변경가능)
-data_sheet_name = '시계외' ## 데이터 파일 시트 
 start_column = 'A' ## 데이터 파일 시트에서 값을 가져올 시작 열
 end_column = 'Q' ## 데이터 파일 시트에서 값을 가져올 끝 열
-iter = 5 ## 문서 생성을 할 데이터의 갯수
+iter = 0 ## 문서 생성을 할 데이터의 갯수
 data_sheet = data.get_sheet_by_name(data_sheet_name) #로 데이터 파일(resultDB.xlxs,시트명 : '시계외' or '시내')
 
-
-
-
+for row in data_sheet.rows:
+    iter=iter+1
 
 ## 엑셀 PDF 연결, background 실행
 excel = win32com.client.Dispatch('Excel.Application')
@@ -50,9 +62,14 @@ for i in range(iter):
         for cell in row:
             data_list.append(cell.value)
 
-    print(data_list) # 각 행의 값들을 콘솔에 표시
+    print('가져오는 중 : ' + str(data_list)) # 각 행의 값들을 콘솔에 표시
     key_value = str(data_list[10]) #넘버링을 위한 key value 엑셀에 ****수임번호****에 해당합니다. , 예상 정수값
     
+    ## 수임번호가 없을 경우 해당 셀 pass
+    if(data_list[10]==None):
+        print('조사연번'+str(data_list[0])+'에 해당하는 행의 수임번호가 없습니다.\n 생성 실패.')
+        continue
+
     # (예정) for 문 삽입부분
     # 추출한 데이터를 양식에 매핑시켜주는 부분 :  land_1 sheet
     # form_sheet_page_1['B7'] = data_list[0] ## 조사연번
@@ -79,11 +96,17 @@ for i in range(iter):
     # (향후 변경) 1 : 지적도 , 2 : 국토정보기본도, 3 : 현황사진
     for j in range(3):
         img_file_name = filepath + '\\image\\' + '\\simple\\' + key_value +'_' +str(j+1) + input_image_format # 이미지경로 
-        print(img_file_name)
+        print('이미지 파일 삽입중 : ' + img_file_name)
         try: ##이미지 파일 삽입시도.
             img = openpyxl.drawing.image.Image(img_file_name)
         except: ##해당하는 이미지 파일이 없을경우, form overriding 방지
             print('수임번호'+ key_value +'에 해당하는 이미지 파일이 존재하지 않습니다.')
+            if(j==0): # 지적도
+                print('지적도 누락!')
+            elif(j==1): # 국토정보기본도
+                print('국토정보기본도 누락!')
+            elif(j==2): # 현황사진
+                print('현황사진 누락!')
         else:
             if(j==0): # 지적도
                 img.width=432 # 이미지 리사이징, 가로.픽셀 단위입니다.
@@ -116,3 +139,5 @@ for i in range(iter):
 
 data.close()
 excel.Quit()
+print('모든 변환이 완료되었습니다. \n 엔터를 누르시면 프로그램을 종료합니다.')
+a=input()

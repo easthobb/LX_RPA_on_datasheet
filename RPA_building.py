@@ -10,31 +10,38 @@ import time
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
-saved_name = 'building'
+saved_name = '실태조사_'
 
 ### data sheet에서 필요한 설정요소 ### 
 data = openpyxl.load_workbook(filepath+'data.xlsx') #로 데이터 시트 오픈(변경가능)
 data_sheet_name = 'building' ## 데이터 파일 시트 
 start_column = 'A' ## 데이터 파일 시트에서 값을 가져올 시작 열
 end_column = 'AM' ## 데이터 파일 시트에서 값을 가져올 끝 열
-iter = 4 ## 문서 생성을 할 데이터의 갯수 
+iter = 0 ## 문서 생성을 할 데이터의 갯수 
 data_sheet = data.get_sheet_by_name(data_sheet_name) #로 데이터 시트 객체 파일(land,시트명 : land)
 
-### form sheet 에서 필요한 설정요소
-form = openpyxl.load_workbook(filepath+'RPA_form.xlsx') #폼 데이터 시트 경로 지정(변경가능)
-form_sheet_list = ['building_1','building_2'] ## 접근할 시트(추가 및 삭제 가능)
-form_sheet_page_1 = form.get_sheet_by_name(form_sheet_list[0]) #폼 시트 페이지 1(building, 시트명 : land_1)
-form_sheet_page_2 = form.get_sheet_by_name(form_sheet_list[1]) #폼 시트 페이지 2(building, 시트명 : land_2)
+for row in data_sheet.rows:
+    iter=iter+1
 
 ## 엑셀 PDF 연결
 excel = win32com.client.Dispatch('Excel.Application')
 excel.Visible = False
+excel.ScreenUpdating = False
+excel.DisplayAlerts = False
+excel.EnableEvents = False
+
 
 
 # 로 데이터 개별 객체를 데이터 시트에서 추출
 for i in range(iter):
-    sheet_start_cell = start_column + str(i+iter) 
-    sheet_end_cell = end_column + str(i+iter)
+    ### form sheet 에서 필요한 설정요소
+    form = openpyxl.load_workbook(filepath+'RPA_form.xlsx') #폼 데이터 시트 경로 지정(변경가능)
+    form_sheet_list = ['building_1','building_2'] ## 접근할 시트(추가 및 삭제 가능)
+    form_sheet_page_1 = form.get_sheet_by_name(form_sheet_list[0]) #폼 시트 페이지 1(building, 시트명 : building_1)
+    form_sheet_page_2 = form.get_sheet_by_name(form_sheet_list[1]) #폼 시트 페이지 2(building, 시트명 : building_2)
+
+    sheet_start_cell = start_column + str(i+4) # 시작셀 A4- i 증가하면서
+    sheet_end_cell = end_column + str(i+4) ## 끝셀 - AM4-
     
     building_object = data_sheet[sheet_start_cell:sheet_end_cell] # 반복시 변경해야 됩니다
     data_list = []
@@ -44,8 +51,13 @@ for i in range(iter):
     key_value = str(data_list[0])
     print(data_list)
     
+    ## 수임번호가 없을 경우 해당 셀 pass
+    if(data_list[10]==None):
+        print('조사연번'+str(data_list[0])+'에 해당하는 행의 수임번호가 없습니다.')
+        continue
+
     # 추출한 데이터를 양식에 매핑시켜주는 부분
-    form_sheet_page_1['B2'] = data_list[0] ##관리번호
+    form_sheet_page_1['B1'] = data_list[0] ##관리번호
     form_sheet_page_1['D6'] = data_list[1] ##고유번호
     form_sheet_page_1['J6'] = data_list[2] ## 재산번호
     form_sheet_page_1['D7'] = data_list[3] ## 소재지
@@ -69,27 +81,30 @@ for i in range(iter):
     form_sheet_page_1['C14'] = data_list[21] ## 이용현황
     form_sheet_page_1['C15'] = data_list[22] ## 토지이용계획
 
-    ## 소재지 00시 00구 추출 부분 
-    city = (data_list[3].split())[0]
-    district = (data_list[3].split())[1] 
-    form_sheet_page_1['C1'] = city + " " + district
+    
+   
+    form_sheet_page_1['C1'] = " " + data_list[3] + ' 단독사용[건물]'
 
     # (예정) for문 삽입부분 
     # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 관리번호-1( ),관리번호-2( ), 관리번호-3( ),관리번호-4( )
     for j in range(4):
-        img_file_name = filepath + '\\image\\' +  key_value +'-' +str(j+1) + input_image_format # 첫번째 페이지 이미지 이름 지정
+        img_file_name = filepath + '\\image\\' +  key_value +'_' +str(j+1) + input_image_format # 첫번째 페이지 이미지 이름 지정
         print(img_file_name)
-        img = openpyxl.drawing.image.Image(img_file_name)
-        img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
-        img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
-        if(j==0):
-            form_sheet_page_1.add_image(img,'B20')
-        elif(j==1):
-            form_sheet_page_1.add_image(img,'H20')
-        elif(j==2):
-            form_sheet_page_1.add_image(img,'B34')
-        elif(j==3):
-            form_sheet_page_1.add_image(img,'H34')
+        try: ##이미지 파일 삽입시도.
+            img = openpyxl.drawing.image.Image(img_file_name)
+        except: ##해당하는 이미지 파일이 없을경우, form overriding 방지
+            print('수임번호'+ key_value +'에 해당하는 이미지 파일이 존재하지 않습니다.')
+        else:
+            img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
+            img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
+            if(j==0):
+                form_sheet_page_1.add_image(img,'B20')
+            elif(j==1):
+                form_sheet_page_1.add_image(img,'H20')
+            elif(j==2):
+                form_sheet_page_1.add_image(img,'B34')
+            elif(j==3):
+                form_sheet_page_1.add_image(img,'H34')
 
     #추출한 데이터를 매핑시켜주는 부분 :  building_2 sheet
     form_sheet_page_2['C4'] = data_list[23] ## 건축허가일
@@ -111,17 +126,19 @@ for i in range(iter):
     form_sheet_page_2['J20'] = data_list[37] ## 의견
 
     #output file 저장 부분
-    output_file_name = filepath + '\\output\\' + saved_name + key_value +'.xlsx' ## data_list[0] 관리번호
+    output_file_name = filepath + '\\output\\' + saved_name + key_value + '(건물)' +'.xlsx' ## data_list[0] 관리번호
     form.save(output_file_name)
 
     #output file PDF 저장
     wb = excel.WorkBooks.Open(output_file_name)
     ws_chart = wb.WorkSheets(form_sheet_list)
     ws_chart.Select()
-    pdf_save_path = filepath + "\\output\\" + key_value + '.pdf'
+    pdf_save_path =filepath + '\\output\\' + saved_name + key_value + '(건물)' +'.pdf'
     wb.ActiveSheet.ExportAsFixedFormat(0,pdf_save_path)
     wb.Close(True)
 
 form.close()
 data.close()
 excel.Quit()
+print('모든 변환이 완료되었습니다. \n 엔터를 누르시면 프로그램을 종료합니다.')
+a=input()
