@@ -95,7 +95,7 @@ for i in range(iter):
     # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 수임번호_1( ), 수임번호-2( ), 수임번호_3( )
     # (향후 변경) 1 : 지적도 , 2 : 국토정보기본도, 3 : 현황사진
     for j in range(3):
-        img_file_name = filepath + '\\image\\' + '\\simple\\' + key_value +'_' +str(j+1) + input_image_format # 이미지경로 
+        img_file_name = filepath + '\\image\\' + key_value +'_' +str(j+1) + input_image_format # 이미지경로 
         print('이미지 파일 삽입중 : ' + img_file_name)
         try: ##이미지 파일 삽입시도.
             img = openpyxl.drawing.image.Image(img_file_name)
