@@ -95,8 +95,8 @@ for i in range(iter):
         except: ##해당하는 이미지 파일이 없을경우, form overriding 방지
             print('수임번호'+ key_value +'에 해당하는 이미지 파일이 존재하지 않습니다.')
         else:
-            img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
-            img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
+            img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
+            img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
             if(j==0):
                 form_sheet_page_1.add_image(img,'B20')
             elif(j==1):

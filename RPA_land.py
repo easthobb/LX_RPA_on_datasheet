@@ -131,16 +131,16 @@ for i in range(iter):
                 print('토지이용계획확인서 누락')
         else:
             if(j==0): # 지적도
-                img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
-                img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
+                img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
+                img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
                 form_sheet_page_1.add_image(img,'B20')
             elif(j==1): # 국토정보기본도
-                img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
-                img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
+                img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
+                img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
                 form_sheet_page_1.add_image(img,'H20')
             elif(j==2): # 현황사진
-                img.width=430 # 이미지 리사이징, 가로.픽셀 단위입니다.
-                img.height=286 # 이미지 리사이징 세로.픽셀 단위입니다.
+                img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
+                img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
                 form_sheet_page_1.add_image(img,'E34')
             elif(j==3): # 사용허가및무단점유현황
                 img.width=864 # 이미지 리사이징, 가로.픽셀 단위입니다.
