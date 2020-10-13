@@ -6,7 +6,7 @@ import win32com.client
 import time
 
 ## 건물 양식 입력 자동화 python file
-
+## version 1.2 (2020/10/13)
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
@@ -57,8 +57,8 @@ for i in range(iter):
         continue
 
     # 추출한 데이터를 양식에 매핑시켜주는 부분
-    form_sheet_page_1['B1'] = data_list[0] ##관리번호
-    form_sheet_page_1['D6'] = data_list[1] ##고유번호
+    form_sheet_page_1['B1'] = data_list[0] ## 수임번호
+    form_sheet_page_1['D6'] = data_list[1] ## 고유번호
     form_sheet_page_1['J6'] = data_list[2] ## 재산번호
     form_sheet_page_1['D7'] = data_list[3] ## 소재지
     form_sheet_page_1['J7'] = data_list[4] ## 재산명칭
@@ -86,7 +86,7 @@ for i in range(iter):
     form_sheet_page_1['C1'] = " " + data_list[3] + ' 단독사용[건물]'
 
     # (예정) for문 삽입부분 
-    # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 관리번호-1( ),관리번호-2( ), 관리번호-3( ),관리번호-4( )
+    # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 수임번호_1( ),수임번호_2( ), 수임번호_3( ),수임번호_4( )
     for j in range(4):
         img_file_name = filepath + '\\image\\' +  key_value +'_' +str(j+1) + input_image_format # 첫번째 페이지 이미지 이름 지정
         print(img_file_name)
@@ -126,7 +126,7 @@ for i in range(iter):
     form_sheet_page_2['J20'] = data_list[37] ## 의견
 
     #output file 저장 부분
-    output_file_name = filepath + '\\output\\' + saved_name + key_value + '(건물)' +'.xlsx' ## data_list[0] 관리번호
+    output_file_name = filepath + '\\output\\' + saved_name + key_value + '(건물)' +'.xlsx' ## data_list[0] 수암번호
     form.save(output_file_name)
 
     #output file PDF 저장

@@ -6,7 +6,7 @@ import win32com.client
 import time
 
 ## 토지 양식 입력 자동화 python file
-
+## version 1.2 (2020/10/13)
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
@@ -59,7 +59,7 @@ for i in range(iter):
 
     # (예정) for 문 삽입부분
     # 추출한 데이터를 양식에 매핑시켜주는 부분 :  land_1 sheet
-    form_sheet_page_1['B1'] = data_list[0] ## 관리번호
+    form_sheet_page_1['B1'] = data_list[0] ## 수임번호
     form_sheet_page_1['D6'] = data_list[1] ## 고유번호
     form_sheet_page_1['J6'] = data_list[2] ## 재산번호
     form_sheet_page_1['D7'] = data_list[3] ## 소재지
@@ -110,7 +110,7 @@ for i in range(iter):
     form_sheet_page_2['L28'] = data_list[40] ## 2차분류=임시
     form_sheet_page_2['D29'] = data_list[41] ## 활용의견
     
-    # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 관리번호-1( ),관리번호-2( ), 관리번호-3( ),관리번호-4( ), 관리번호-5( ),
+    # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 수임번호_1( ),수임번호_2( ), 수임번호_3( ),수임번호_4( ), 수임번호_5( )
     # (향후 변경) 1 : 지적도 , 2 : 국토정보기본도, 3 : 현황사진, 4 :사용허가및무단점유현황, 5 : 토지이용계획확인서 
     for j in range(5):
         img_file_name = filepath + '\\image\\' +  key_value +'_' +str(j+1) + input_image_format # 첫번째 페이지 이미지 이름 지정
@@ -152,7 +152,7 @@ for i in range(iter):
                 form_sheet_page_3.add_image(img,'B3')
 
     #output file 저장 부분
-    output_file_name = filepath + '\\output\\' + saved_name + key_value + '(토지)' + '.xlsx' ## data_list[0] 관리번호
+    output_file_name = filepath + '\\output\\' + saved_name + key_value + '(토지)' + '.xlsx' ## data_list[0] 수임번호
     form.save(output_file_name)
 
     #output file PDF 저장

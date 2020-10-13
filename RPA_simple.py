@@ -7,7 +7,7 @@ import PIL
 
 
 ## 토지 양식 입력 자동화 python file
-
+## version 1.2 (2020/10/13) 
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
@@ -89,7 +89,7 @@ for i in range(iter):
     form_sheet_page_1['D12'] = data_list[13] ## 사용형태
     form_sheet_page_1['D13'] = data_list[14] ## 조사일자
     form_sheet_page_1['D14'] = data_list[15] ## 조사내용
-    #form_sheet_page_1['D13'] = data_list[16] ## 토지이용계획 - form에 없음
+    form_sheet_page_1['D15'] = data_list[16] ## 토지이용계획 - form에 없음
     
     
     # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 수임번호_1( ), 수임번호-2( ), 수임번호_3( )
@@ -111,15 +111,15 @@ for i in range(iter):
             if(j==0): # 지적도
                 img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
                 img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
-                form_sheet_page_1.add_image(img,'B18') ## 이미지가 들어갈 셀
+                form_sheet_page_1.add_image(img,'B19') ## 이미지가 들어갈 셀
             elif(j==1): # 국토정보기본도
                 img.width=442    # 이미지 리사이징, 가로.픽셀 단위입니다.
                 img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
-                form_sheet_page_1.add_image(img,'H18') ## 이미지가 들어갈 셀
+                form_sheet_page_1.add_image(img,'H19') ## 이미지가 들어갈 셀
             elif(j==2): # 현황사진
                 img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
                 img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
-                form_sheet_page_1.add_image(img,'E32') ## 이미지가 들어갈 셀
+                form_sheet_page_1.add_image(img,'E33') ## 이미지가 들어갈 셀
         
 
     #output file 저장 부분

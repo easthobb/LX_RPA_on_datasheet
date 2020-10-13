@@ -4,6 +4,7 @@ this project is for excel RPA datasheet for LX seoul HQ using OpenpyXl
 엑셀 데이터 -> 문서(excel,PDF) 양식 입력 자동화를 위한 파이썬 배치파일
 2020/09/28 - ver 1.0 rel.
 2020/10/07 - ver 1.1 + 파이썬&의존성 설치 배치파일 작성 및 이미지 resize 디버그
+2020/10/13 - ver 1.2 + simply.py 폼 수정 및 가이드 수정 /  관리번호 항목 수임번호로 완전 대체(파이썬 파일, 데이터파일)
 ---
 ## 기능 요구사항
 -  엑셀파일의 데이터(1k건 단위)를 엑셀 form 의 문서로 변환 기능
