@@ -75,8 +75,8 @@ for i in range(iter):
     # form_sheet_page_1['B7'] = data_list[0] ## 조사연번
     form_sheet_page_1['C2'] = "   "+ data_list[1] ## 소재지
     form_sheet_page_1['D7'] = data_list[2] ## 대장지목
-    form_sheet_page_1['J7'] = data_list[3] ## 대장면적
-    form_sheet_page_1['D8'] = data_list[4] ## 공시지가(20년)
+    form_sheet_page_1['J7'] = str(data_list[3]) + '㎡'## 대장면적
+    form_sheet_page_1['D8'] = str(data_list[4]) + '원/㎡'## 공시지가(20년)
     form_sheet_page_1['J8'] = data_list[5] ## 취득일자
     #form_sheet_page_1['D9'] = data_list[6] ## 공유지분여부 - form에 없음
     form_sheet_page_1['D9'] = data_list[7] ## 공유자수(공유자수 시 포함)

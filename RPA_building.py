@@ -6,7 +6,7 @@ import win32com.client
 import time
 
 ## 건물 양식 입력 자동화 python file
-## version 1.2 (2020/10/13)
+## version 1.3 (2020/10/14)
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="C:\\Users\\user\\Desktop\\RPA\\"
 input_image_format = '.png'
@@ -67,12 +67,12 @@ for i in range(iter):
     form_sheet_page_1['J8'] = data_list[7] ## 관리관
     form_sheet_page_1['D9'] = data_list[8] ## 재산구분
     form_sheet_page_1['J9'] = data_list[9] ## 위임기관
-    form_sheet_page_1['D10'] = data_list[10] ## 대장면적
+    form_sheet_page_1['D10'] = str(data_list[10]) + '㎡'## 대장면적
     form_sheet_page_1['G10'] = data_list[11] ## 대장지목
-    form_sheet_page_1['J10'] = data_list[12] ## 연면적
+    form_sheet_page_1['J10'] = str(data_list[12]) + '㎡'## 연면적
     form_sheet_page_1['D11'] = data_list[13] ## 관련지번
     form_sheet_page_1['J11'] = data_list[14] ## 용도
-    form_sheet_page_1['D12'] = data_list[15] ##공시지가
+    form_sheet_page_1['D12'] = str(data_list[15]) +'원/㎡'##공시지가
     form_sheet_page_1['G12'] = data_list[16] ##구조/지붕
     form_sheet_page_1['J12'] = data_list[17] ##층수
     form_sheet_page_1['D13'] = data_list[18] ## 용도지역
