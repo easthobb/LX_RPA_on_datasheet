@@ -37,7 +37,7 @@ while(1):
 ### data sheet에서 필요한 설정요소 ### 
 data = openpyxl.load_workbook(filepath+'resultDB.xlsx') #로 데이터 시트 오픈(변경가능)
 start_column = 'A' ## 데이터 파일 시트에서 값을 가져올 시작 열
-end_column = 'Q' ## 데이터 파일 시트에서 값을 가져올 끝 열
+end_column = 'R' ## 데이터 파일 시트에서 값을 가져올 끝 열
 iter = 0 ## 문서 생성을 할 데이터의 갯수
 data_sheet = data.get_sheet_by_name(data_sheet_name) #로 데이터 파일(resultDB.xlxs,시트명 : '시계외' or '시내')
 
@@ -97,9 +97,10 @@ for i in range(iter):
     form_sheet_page_1['D11'] = str(data_list[11]).split(' ')[0] ## 수탁일자
     form_sheet_page_1['J11'] = data_list[12] ## 재산관리관
     form_sheet_page_1['D12'] = data_list[13] ## 사용형태
-    form_sheet_page_1['D13'] = data_list[14] ## 조사일자
+    form_sheet_page_1['D13'] = str(data_list[14]).split(' ')[0] ## 조사일자
     form_sheet_page_1['D14'] = data_list[15] ## 조사내용
     form_sheet_page_1['D15'] = data_list[16] ## 토지이용계획 - form에 없음
+    form_sheet_page_1['J13'] = data_list[17] ## 현황측량실시여부
     
     #1104 이미지 파일 매핑 때문에 넣어줌
     img_name_form = ' '.join(data_list[1].split()[-2:])
@@ -121,11 +122,11 @@ for i in range(iter):
                 print('현황사진 누락!')
         else:
             if(j==0): # 지적도
-                img.width=442 # 이미지 리사이징, 가로.픽셀 단위입니다.
+                img.width=473 # 이미지 리사이징, 가로.픽셀 단위입니다.
                 img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
                 form_sheet_page_1.add_image(img,'B20') ## 이미지가 들어갈 셀
             elif(j==1): # 국토정보기본도
-                img.width=442    # 이미지 리사이징, 가로.픽셀 단위입니다.
+                img.width=473    # 이미지 리사이징, 가로.픽셀 단위입니다.
                 img.height=290 # 이미지 리사이징 세로.픽셀 단위입니다.
                 form_sheet_page_1.add_image(img,'H20') ## 이미지가 들어갈 셀
             elif(j==2): # 현황사진
