@@ -8,7 +8,7 @@ import PIL
 
 
 ## 토지 양식 입력 자동화 python file
-## version 1.3 (2020/11/06) 
+## version 1.4 (2020/11/10) 
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="D:\workingset\\"
 input_image_format = '.jpg'
