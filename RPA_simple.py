@@ -5,6 +5,24 @@ from openpyxl.styles import Alignment
 import win32com.client
 import PIL
 
+## for logging
+## error -> 수임번호 
+## mode -> 부재이미지번호 1-지적 2-향측 3- 현장사진
+def logging(error,mode):
+    with open('error_log.txt','a') as f:
+        error_msg = error + "에 해당하는 이미지 부재 : "
+        if mode == 1:
+            error_msg = error_msg + "향측도\n"
+            f.write(error_msg)
+        elif mode ==2:
+            error_msg = error_msg + "지적도\n"
+            f.write(error_msg)
+        elif mode ==3:
+            error_msg = error_msg + "현장사진\n"
+            f.write(error_msg)
+        
+
+
 
 
 ## 토지 양식 입력 자동화 python file
@@ -12,12 +30,16 @@ import PIL
 ###출력파일 및 excel PDF 파일 절대경로 설정
 filepath ="D:\workingset\\"
 input_image_format = '.jpg'
-saved_name = '실태조사_'
-
+saved_name = ''
+error_list = []
 
 ## result DB 조건
 ## 날짜 데이터 포맷
 ## 수임번호 줄바꿈 없어야함
+
+
+
+
 
 
 # 사용자에게 시트 입력을 받는 부분
@@ -80,19 +102,27 @@ for i in range(iter):
         print('조사연번'+str(data_list[0])+'에 해당하는 행의 수임번호가 없습니다.\n 생성 실패.')
         continue
     
-    # (예정) for 문 삽입부분
-    # 추출한 데이터를 양식에 매핑시켜주는 부분 :  land_1 sheet
-    # form_sheet_page_1['B7'] = data_list[0] ## 조사연번
+    # 1216 수정
+    # type error 
+    if type(data_list[4]) == int:
+        gongsi = str(format(int(data_list[4]),",")) + '원/㎡'
+    else:
+        gongsi = str(data_list[4]) + '원/㎡'
+
+
+    # 1215 수정
+    # 추출한 데이터를 양식에 매핑시켜주는 부분 :  simple sheet
+    form_sheet_page_1['B2'] = data_list[0] ## 조사연번
     form_sheet_page_1['C2'] = "   "+ data_list[1] ## 소재지
     form_sheet_page_1['D7'] = data_list[2] ## 대장지목
     form_sheet_page_1['J7'] = str(data_list[3]) + '㎡'## 대장면적
-    form_sheet_page_1['D8'] = str(format(int(data_list[4]),",")) + '원/㎡'## 공시지가(20년)
+    form_sheet_page_1['D8'] = gongsi ## 공시지가 - 타입 에러 케이스 때문에 1216으로 뺌
     form_sheet_page_1['J8'] = str(data_list[5]).split(' ')[0] ## 취득일자
     #form_sheet_page_1['D9'] = data_list[6] ## 공유지분여부 - form에 없음
     form_sheet_page_1['D9'] = data_list[7] ## 공유자수(공유자수 시 포함)
     form_sheet_page_1['J9'] = data_list[8] ## 서울시 공유지분
     form_sheet_page_1['D10'] = data_list[9] ## PNU
-    form_sheet_page_1['B2'] = data_list[10] ## 수임번호 - 라벨
+    #form_sheet_page_1['B2'] = data_list[10] ## 수임번호 - 라벨
     form_sheet_page_1['J10'] = data_list[10] ## 수임번호 - 시트
     form_sheet_page_1['D11'] = str(data_list[11]).split(' ')[0] ## 수탁일자
     form_sheet_page_1['J11'] = data_list[12] ## 재산관리관
@@ -102,24 +132,34 @@ for i in range(iter):
     form_sheet_page_1['D15'] = data_list[16] ## 토지이용계획 - form에 없음
     form_sheet_page_1['J13'] = data_list[17] ## 현황측량실시여부
     
-    #1104 이미지 파일 매핑 때문에 넣어줌
-    img_name_form = ' '.join(data_list[1].split()[-2:])
+    ##1216 요구사항 신규 반영 -> 파일 저장명 주소순으로.
+    saved_name = data_list[1]
+    #1215 산 때문에 파일 업데이트 
+
+    if (data_list[1].split())[3]=='산':
+        img_name_form= ' '.join(data_list[1].split()[-3:]) 
+    else:    
+        img_name_form = ' '.join(data_list[1].split()[-2:])
     
     # 이미지 입력부분 : 리사이즈 , 이미지 파일명 : 수임번호_1( ), 수임번호-2( ), 수임번호_3( )
-    # (향후 변경) 1 : 지적도 , 2 : 국토정보기본도, 3 : 현황사진
+    # (향후 변경) 1 : 지적도 , 2 : 국토정보기본도, 3 : 현   황사진
     for j in range(3):
         img_file_name = filepath + '\\image\\' + img_name_form + '_' +str(j+1) + input_image_format # 이미지경로 
         print('이미지 파일 삽입중 : ' + img_file_name)
         try: ##이미지 파일 삽입시도.
             img = openpyxl.drawing.image.Image(img_file_name)
         except: ##해당하는 이미지 파일이 없을경우, form overriding 방지
-            print('수임번호'+ key_value +'에 해당하는 이미지 파일이 존재하지 않습니다.')
+            print('수임번호 '+ key_value +'에 해당하는 이미지 파일이 존재하지 않습니다.')
+            error_list.append(str(key_value)+" miss something!! ")
             if(j==0): # 지적도
                 print('지적도 누락!')
+                logging(key_value,1)
             elif(j==1): # 국토정보기본도
                 print('국토정보기본도 누락!')
+                logging(key_value,2)
             elif(j==2): # 현황사진
                 print('현황사진 누락!')
+                logging(key_value,3)
         else:
             if(j==0): # 지적도
                 img.width=473 # 이미지 리사이징, 가로.픽셀 단위입니다.
@@ -136,19 +176,22 @@ for i in range(iter):
         
 
     #output file 저장 부분
-    output_file_name = filepath + '\\output\\' + saved_name + key_value +'.xlsx' ## data_list[10] 수임번호
+    output_file_name = filepath + '\\output\\' + saved_name + " " + key_value +'.xlsx' ## data_list[10] 수임번호
     form.save(output_file_name)
     form.close()
 
     #output file PDF 저장
-    excel.Visible = False
-    wb = excel.WorkBooks.Open(output_file_name)
-    excel.Visible = False
-    ws_chart = wb.WorkSheets(form_sheet_list)
-    ws_chart.Select()
-    pdf_save_path = filepath + "\\output\\" +saved_name + key_value + '.pdf'
-    wb.ActiveSheet.ExportAsFixedFormat(0,pdf_save_path)
-    wb.Close(True)
+    
+    # wb = excel.WorkBooks.Open(output_file_name)
+    # excel.Visible = False
+    # ws_chart = wb.WorkSheets(form_sheet_list)
+    # ws_chart.Select()
+    # pdf_save_path = filepath + "\\output\\" +saved_name + key_value + '.pdf'
+    # wb.ActiveSheet.ExportAsFixedFormat(0,pdf_save_path)
+    # wb.Close(True)
+
+
+
 
 data.close()
 excel.Quit()
