@@ -44,13 +44,16 @@ error_list = []
 
 # 사용자에게 시트 입력을 받는 부분
 while(1):
-    print('대상 재산이 시내 시트에 존재하는 데이터일 경우 1 을 입력해주시고 \n 시계외 데이터일 경우 0 을 입력해주세요!(enter)')
+    print('대상 재산이 시내 시트에 존재하는 데이터일 경우 1 을 입력해주시고 \n 시계외 데이터일 경우 0 을 입력해주세요! \n 대규모는 2 입력(enter)')
     temp = input()
     if(temp =='1'):
         data_sheet_name = '시내'
         break
     elif(temp=='0'):
         data_sheet_name = '시계외'
+        break
+    elif(temp=='2'):
+        data_sheet_name = '대규모'
         break
     else:
         print('잘못입력하셨습니다. 다시 입력해주세요 :)')
@@ -66,7 +69,7 @@ data_sheet = data.get_sheet_by_name(data_sheet_name) #로 데이터 파일(resul
 for row in data_sheet.rows:
     iter=iter+1
 
-## 엑셀 PDF 연결, background 실행
+## 엑셀 PDF 연결, background 실행   
 excel = win32com.client.Dispatch('Excel.Application')
 excel.Visible = False
 excel.ScreenUpdating = False
